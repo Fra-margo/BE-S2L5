@@ -1,0 +1,40 @@
+Tutte le storedProcedure:
+
+1)
+create procedure VerbaliPerAnno
+@Anno INT
+as
+begin
+select *
+from VERBALE
+where YEAR(DataViolazione) = @Anno
+end
+
+exec VerbaliPerAnno @Anno = 2024
+
+//
+
+2)
+create procedure TotalePuntiDecurtatiPerData
+@Data date
+as
+begin
+select SUM(DecurtamentoPunti) as SommaTotalePuntiDecurtati
+from VERBALE
+where DataViolazione = @Data
+end
+
+exec TotalePuntiDecurtatiPerData @Data = '2023-07-12'
+
+//
+
+3)
+create procedure EliminaVerbale
+@IDverbale int
+as
+begin
+delete from VERBALE
+where IDverbale = @IDverbale
+end
+
+exec EliminaVerbale @IDverbale = 15

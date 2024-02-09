@@ -1,0 +1,98 @@
+Elenco di tutte le query (in alcuni richieste ho cambiato le date o i numeri richiesti come confronto, con dei valori adatti al mio database, in modo da fare le dovute verifiche)
+
+1)
+select COUNT(*) As NumeroTotaleVerbali
+from VERBALE
+
+//
+
+2)
+select a.Cognome, a.Nome, COUNT(v.IDverbale) as NumeroVerbaliPerAnagrafica
+from ANAGRAFICA a
+LEFT JOIN VERBALE v ON a.IDanagrafica = v.IDanagrafica
+group by a.Cognome, a.Nome
+
+//
+
+3)
+select tv.Descrizione, COUNT(v.IDverbale) as NumeroVerbaliPerViolazione
+from TIPO_VIOLAZIONE tv
+left join VERBALE v on tv.IDviolazione = v.IDviolazione
+group by tv.descrizione
+
+//
+
+4)
+SELECT a.Cognome, a.Nome, SUM(v.DecurtamentoPunti) AS TotalePuntiDecurtatiPerAnagrafica
+FROM ANAGRAFICA a
+LEFT JOIN VERBALE v ON a.idanagrafica = v.idanagrafica
+GROUP BY a.Cognome, a.Nome;
+
+//
+
+5)
+select a.Cognome, a.Nome, v.DataViolazione, v.IndirizzoViolazione, v.Importo, v.DecurtamentoPunti
+from ANAGRAFICA a
+join VERBALE v on a.IDanagrafica = v.IDanagrafica
+where a.Città = 'Palermo'
+
+//
+
+6)
+select a.Cognome, a.Nome, v.DataViolazione, v.IndirizzoViolazione, v.Importo, v.DecurtamentoPunti
+from ANAGRAFICA a
+join VERBALE v on a.IDanagrafica = v.IDanagrafica
+where v.DataViolazione between '2023-02-01' and '2023-07-31'
+
+//
+
+7)
+select a.Cognome, a.Nome, SUM(v.Importo) as TotaleImportoPerAnagrafica
+from ANAGRAFICA a
+join VERBALE v on a.IDanagrafica = v.IDanagrafica
+group by a.Cognome, a.Nome
+
+//
+
+8)
+select *
+from ANAGRAFICA
+where Città = 'Palermo'
+
+//
+
+9)
+create procedure VisualizzaDettagliViolazione
+@Data date
+as
+begin
+select DataViolazione, Importo, DecurtamentoPunti
+from VERBALE
+where DataViolazione = @Data;
+end
+
+exec VisualizzaDettagliViolazione @Data = '2023-07-12'
+
+//
+
+10)
+select NominativoAgente, COUNT (*) as TotaleViolazioniContestatePerAgente
+from VERBALE
+group by NominativoAgente
+
+//
+
+11)
+SELECT a.Cognome, a.Nome, a.Indirizzo, v.DataViolazione, v.Importo, v.DecurtamentoPunti
+from ANAGRAFICA a
+join VERBALE v on a.IDanagrafica = v.IDanagrafica
+where v.DecurtamentoPunti > 3
+
+//
+
+12)
+SELECT a.Cognome, a.Nome, a.Indirizzo, v.DataViolazione, v.Importo, v.DecurtamentoPunti
+from ANAGRAFICA a
+join VERBALE v on a.IDanagrafica = v.IDanagrafica
+where v.Importo > 100
+
